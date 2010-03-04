@@ -1,3 +1,3 @@
-if RAILS_ENV == 'production'
-	ActionController::Dispatcher.middleware.use Hassle
+if Rails.env.production?
+  Rails::Application.middleware.use Hassle
 end
