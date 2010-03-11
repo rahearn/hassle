@@ -41,7 +41,7 @@ class Hassle::Compiler
       end
     else
       default_location = File.join(options[:css_location], "sass")
-      options[:template_location] = {default_location => File.expand_path(css_location(default_location), '..'))}
+      options[:template_location] = {default_location => File.expand_path(css_location(default_location), '..')}
     end
   end
 
