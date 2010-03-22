@@ -33,16 +33,18 @@ class Hassle::Compiler
   end
 
   def normalize
-    template_location = options[:template_location]
-
-    if template_location.is_a?(Hash) || template_location.is_a?(Array)
-      options[:template_location] = template_location.to_a.map do |input, output|
-        [input, css_location(output)]
+    options[:template_location] = 
+      if options[:hassle_location]
+        options[:hassle_location]
+      elsif options[:template_location].is_a?(Hash) || options[:template_location].is_a?(Array)
+        options[:hassle_location] = options[:template_location].to_a.map do |input, output|
+          [input, css_location(output)]
+        end
+      else
+        default_location = File.join(options[:css_location], "sass")
+        options[:hassle_location] = 
+          {default_location => File.expand_path(css_location(default_location), '..')}
       end
-    else
-      default_location = File.join(options[:css_location], "sass")
-      options[:template_location] = {default_location => File.expand_path(css_location(default_location), '..')}
-    end
   end
 
   def prepare
