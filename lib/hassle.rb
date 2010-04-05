@@ -4,15 +4,26 @@ require 'sass/plugin'
 
 class Hassle
   def initialize(app)
-    compiler = Hassle::Compiler.new
-    compiler.compile
-    @static = Rack::Static.new(app,
-                               :urls => compiler.stylesheets,
-                               :root => compiler.compile_location)
+    @app = app
+    @compiler = Hassle::Compiler.new
+    @compiler.compile
   end
 
   def call(env)
-    @static.call(env)
+    path = env['PATH_INFO']
+
+    if @compiler.stylesheets.include?(path)
+      stylesheet = path.split('/').last
+      stylesheet_path = File.join(@compiler.compile_location, path)
+
+      # Read the contents of the stylesheet
+      content = File.read(stylesheet_path)
+      length = "".respond_to?(:bytesize) ? content.bytesize.to_s : content.size.to_s
+      [200, {'Content-Type' => 'text/css', 'Content-Length' => length}, [content]]
+    else
+      # Not a request Hassle cares about
+      @app.call(env)
+    end
   end
 end
 
