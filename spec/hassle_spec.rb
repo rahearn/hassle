@@ -36,7 +36,7 @@ describe Hassle do
       @location_one = "./public/css/sass"
       @location_two = "./public/stylesheets/sass"
       Sass::Plugin.options[:template_location] = { @location_one => "public/css",
-                                                   @location_two => "public/css"}
+                                                   @location_two => "public/stylesheets"}
       write_sass(@location_one, "style")
       write_sass(@location_two, "application")
     end

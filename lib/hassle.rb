@@ -35,8 +35,13 @@ class Hassle::Compiler
   def css_location(path)
     expanded = File.expand_path(path)
     public_dir = File.join(File.expand_path(Dir.pwd), "public")
+    compiled_path = compile_location(expanded.gsub(public_dir, ''))
 
-    File.expand_path(compile_location(expanded.gsub(public_dir, '')))
+    if 'sass' == expanded.split('/').last
+      File.expand_path(File.join(compiled_path, '..'))
+    else
+      File.expand_path(compiled_path)
+    end
   end
 
   def compile_location(*subdirs)
