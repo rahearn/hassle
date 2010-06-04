@@ -1,9 +1,12 @@
 require 'rubygems'
 require 'spec'
 require 'rack/test'
-
+require 'active_support'
+require 'active_support/core_ext/numeric/time'
+require 'sass'
+require 'sass/plugin'
 require File.dirname(__FILE__) + '/../lib/hassle'
-
+puts 1.hour
 SASS_OPTIONS = Sass::Plugin.options.dup
 
 def write_sass(location, css_file = "screen")
@@ -12,8 +15,9 @@ def write_sass(location, css_file = "screen")
 
   File.open(sass_path, "w") do |f|
     f.write <<EOF
-%h1
+%h1 {
   font-size: 42em
+}
 EOF
   end
 
